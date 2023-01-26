@@ -1,6 +1,7 @@
 package nextstep.reservation;
 
-import nextstep.member.Member;
+
+import nextstep.member.domain.Member;
 import nextstep.schedule.Schedule;
 
 import java.util.Objects;

@@ -1,6 +1,6 @@
 package nextstep.reservation;
 
-import nextstep.member.Member;
+import nextstep.member.domain.Member;
 import nextstep.schedule.Schedule;
 import nextstep.theme.Theme;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -18,11 +18,6 @@ import java.util.List;
 public class ReservationDao {
 
     public final JdbcTemplate jdbcTemplate;
-
-    public ReservationDao(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
-    }
-
     private final RowMapper<Reservation> rowMapper = (resultSet, rowNum) -> new Reservation(
             resultSet.getLong("reservation.id"),
             new Schedule(
@@ -45,6 +40,10 @@ public class ReservationDao {
                     resultSet.getString("member.role")
             )
     );
+
+    public ReservationDao(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
 
     public Long save(Reservation reservation) {
         String sql = "INSERT INTO reservation (schedule_id, member_id) VALUES (?, ?);";
