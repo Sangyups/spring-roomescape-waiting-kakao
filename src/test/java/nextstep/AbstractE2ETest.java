@@ -1,9 +1,9 @@
 package nextstep;
 
+import auth.dto.AccessTokenResponse;
+import auth.dto.LoginRequest;
 import io.restassured.RestAssured;
-import nextstep.auth.TokenRequest;
-import nextstep.auth.TokenResponse;
-import nextstep.member.MemberRequest;
+import nextstep.member.dto.MemberRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
@@ -15,12 +15,15 @@ import org.springframework.test.annotation.DirtiesContext;
 public class AbstractE2ETest {
     public static final String USERNAME = "username";
     public static final String PASSWORD = "password";
+    public static final String NAME = "name";
+    public static final String PHONE = "010-1234-5678";
+    public static final String ROLE = "ADMIN";
 
-    protected TokenResponse token;
+    protected AccessTokenResponse token;
 
     @BeforeEach
     protected void setUp() {
-        MemberRequest memberBody = new MemberRequest(USERNAME, PASSWORD, "name", "010-1234-5678", "ADMIN");
+        MemberRequest memberBody = new MemberRequest(USERNAME, PASSWORD, NAME, PHONE, ROLE);
         RestAssured
                 .given().log().all()
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -29,7 +32,7 @@ public class AbstractE2ETest {
                 .then().log().all()
                 .statusCode(HttpStatus.CREATED.value());
 
-        TokenRequest tokenBody = new TokenRequest(USERNAME, PASSWORD);
+        LoginRequest tokenBody = new LoginRequest(USERNAME, PASSWORD);
         var response = RestAssured
                 .given().log().all()
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -39,6 +42,6 @@ public class AbstractE2ETest {
                 .statusCode(HttpStatus.OK.value())
                 .extract();
 
-        token = response.as(TokenResponse.class);
+        token = response.as(AccessTokenResponse.class);
     }
 }
