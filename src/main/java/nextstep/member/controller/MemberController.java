@@ -1,7 +1,7 @@
 package nextstep.member.controller;
 
 import auth.annotation.AuthRequired;
-import auth.domain.UserDetails;
+import auth.domain.AbstractUser;
 import nextstep.member.dto.MemberRequest;
 import nextstep.member.dto.MemberResponse;
 import nextstep.member.mapper.MemberMapper;
@@ -31,8 +31,8 @@ public class MemberController {
     }
 
     @GetMapping("/me")
-    public ResponseEntity<MemberResponse> me(@AuthRequired UserDetails userDetails) {
-        MemberResponse memberResponse = memberService.findById(userDetails.getId())
+    public ResponseEntity<MemberResponse> me(@AuthRequired AbstractUser user) {
+        MemberResponse memberResponse = memberService.findById(user.getId())
                 .map(MemberMapper.INSTANCE::domainToResponseDto)
                 .orElse(null);
 

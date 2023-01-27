@@ -9,19 +9,14 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @SuperBuilder
 @Getter
 @AllArgsConstructor
-public class UserDetails {
+public class AbstractBaseUser {
 
     private final Long id;
-    private final String name;
-    private final String phone;
     private final String username;
-    private final String role;
     private String password;
 
-    public final boolean matchPassword(UserDetails target) {
-        System.out.println(target.getPassword());
-        System.out.println(this.password);
-        System.out.println(PasswordUtil.matches(target.getPassword(), this.password));
+    public final boolean matchPassword(AbstractBaseUser target) {
+
         return PasswordUtil.matches(target.getPassword(), this.password);
     }
 

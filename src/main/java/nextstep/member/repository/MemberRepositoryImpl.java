@@ -1,6 +1,6 @@
 package nextstep.member.repository;
 
-import auth.domain.UserDetails;
+import auth.domain.AbstractUser;
 import auth.repository.MemberRepository;
 import nextstep.member.dao.MemberDao;
 import nextstep.member.mapper.MemberMapper;
@@ -20,20 +20,20 @@ public class MemberRepositoryImpl implements MemberRepository {
     }
 
     @Override
-    public Long save(UserDetails userDetails) {
+    public Long save(AbstractUser userDetails) {
 
-        return memberDao.save(MemberMapper.INSTANCE.userDetailsToEntity(userDetails));
+        return memberDao.save(MemberMapper.INSTANCE.abstractUserToEntity(userDetails));
     }
 
     @Override
-    public Optional<UserDetails> findById(Long id) {
+    public Optional<AbstractUser> findById(Long id) {
 
-        return Optional.ofNullable(MemberMapper.INSTANCE.entityToUserDetails(memberDao.findById(id)));
+        return Optional.ofNullable(MemberMapper.INSTANCE.entityToAbstractUser(memberDao.findById(id)));
     }
 
     @Override
-    public Optional<UserDetails> findByUsername(String username) {
+    public Optional<AbstractUser> findByUsername(String username) {
 
-        return Optional.ofNullable(MemberMapper.INSTANCE.entityToUserDetails(memberDao.findByUsername(username)));
+        return Optional.ofNullable(MemberMapper.INSTANCE.entityToAbstractUser(memberDao.findByUsername(username)));
     }
 }

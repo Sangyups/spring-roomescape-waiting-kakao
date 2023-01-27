@@ -1,14 +1,14 @@
 package auth.repository;
 
-import auth.domain.UserDetails;
+import auth.domain.AbstractUser;
 
 import java.util.Optional;
 
 public interface MemberRepository {
 
-    Long save(UserDetails userDetails);
+    Long save(AbstractUser userDetails);
 
-    Optional<UserDetails> findById(Long id);
+    Optional<AbstractUser> findById(Long id);
 
-    Optional<UserDetails> findByUsername(String username);
+    Optional<AbstractUser> findByUsername(String username);
 }

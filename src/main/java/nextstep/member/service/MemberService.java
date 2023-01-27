@@ -1,6 +1,6 @@
 package nextstep.member.service;
 
-import auth.domain.UserDetails;
+import auth.domain.AbstractUser;
 import auth.repository.MemberRepository;
 import nextstep.member.domain.Member;
 import nextstep.member.mapper.MemberMapper;
@@ -20,7 +20,7 @@ public class MemberService {
     }
 
     public Long create(Member member) {
-        UserDetails requestedMember = MemberMapper.INSTANCE.domainToUserDetails(member);
+        AbstractUser requestedMember = MemberMapper.INSTANCE.domainToAbstractUser(member);
         requestedMember.encryptPassword();
 
         return memberRepository.save(requestedMember);
@@ -29,7 +29,7 @@ public class MemberService {
     public Optional<Member> findById(Long id) {
 
         return memberRepository.findById(id)
-                .map(MemberMapper.INSTANCE::userDetailsToDomain)
+                .map(MemberMapper.INSTANCE::abstractUserToDomain)
                 ;
     }
 }

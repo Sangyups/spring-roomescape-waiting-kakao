@@ -14,7 +14,7 @@ public class AccessToken extends Jwt {
 
     private final String accessToken;
     private String sub;
-    private String role;
+    private AbstractUser.Role role;
     private boolean expired;
     private boolean unsupported;
     private boolean malformed;
@@ -87,16 +87,16 @@ public class AccessToken extends Jwt {
         return PARSER_BUILDER
                 .parseClaimsJws(this.accessToken)
                 .getBody()
-                .getSubject();
+                .getSubject()
+                ;
     }
 
-    private String extractRole() {
+    private AbstractUser.Role extractRole() {
 
-        return PARSER_BUILDER
+        return AbstractUser.Role.of(PARSER_BUILDER
                 .parseClaimsJws(this.accessToken)
                 .getBody()
                 .get("role")
-                .toString()
-                ;
+                .toString());
     }
 }
