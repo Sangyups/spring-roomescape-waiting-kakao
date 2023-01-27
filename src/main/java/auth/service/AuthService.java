@@ -1,7 +1,7 @@
 package auth.service;
 
+import auth.domain.AbstractUser;
 import auth.domain.AccessToken;
-import auth.domain.UserDetails;
 import auth.exception.UnauthenticatedException;
 import auth.exception.UserNotFoundException;
 import auth.repository.MemberRepository;
@@ -19,17 +19,17 @@ public class AuthService {
     }
 
     public AccessToken login(String username, String password) {
-        UserDetails requestedUser = UserDetails.builder()
+        AbstractUser requestedUser = AbstractUser.builder()
                 .username(username)
                 .password(password)
                 .build();
 
-        UserDetails existUser = memberRepository.findByUsername(requestedUser.getUsername())
+        AbstractUser existUser = memberRepository.findByUsername(requestedUser.getUsername())
                 .orElseThrow(UserNotFoundException::new);
         if (!existUser.matchPassword(requestedUser)) {
             throw new UnauthenticatedException();
         }
 
-        return AccessToken.create(String.valueOf(existUser.getId()), existUser.getRole());
+        return AccessToken.create(String.valueOf(existUser.getId()), existUser.getRole().name());
     }
 }

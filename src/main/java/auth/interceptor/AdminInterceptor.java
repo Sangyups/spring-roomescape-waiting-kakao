@@ -1,5 +1,6 @@
 package auth.interceptor;
 
+import auth.domain.AbstractUser;
 import auth.domain.AccessToken;
 import auth.exception.UnauthenticatedException;
 import org.springframework.http.HttpHeaders;
@@ -17,8 +18,8 @@ public class AdminInterceptor implements HandlerInterceptor {
         String authorization = request.getHeader(HttpHeaders.AUTHORIZATION);
         AccessToken accessToken = AccessToken.from(extractToken(authorization));
 
-        String role = accessToken.getRole();
-        if (!Objects.equals(role, "ADMIN")) {
+        AbstractUser.Role role = AbstractUser.Role.of(accessToken.getRole());
+        if (!Objects.equals(role, AbstractUser.Role.ADMIN)) {
             throw new UnauthenticatedException();
         }
 
