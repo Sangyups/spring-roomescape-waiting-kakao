@@ -2,7 +2,7 @@ package auth.interceptor;
 
 import auth.domain.AbstractUser;
 import auth.domain.AccessToken;
-import auth.exception.UnauthenticatedException;
+import auth.exception.NotAuthorizedException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.servlet.HandlerInterceptor;
 
@@ -20,7 +20,7 @@ public class AdminInterceptor implements HandlerInterceptor {
 
         AbstractUser.Role role = AbstractUser.Role.of(accessToken.getRole());
         if (!Objects.equals(role, AbstractUser.Role.ADMIN)) {
-            throw new UnauthenticatedException();
+            throw new NotAuthorizedException();
         }
 
         return true;
@@ -29,6 +29,6 @@ public class AdminInterceptor implements HandlerInterceptor {
     private String extractToken(String authorization) {
         return Optional.ofNullable(authorization)
                 .map(v -> v.split("Bearer ")[1])
-                .orElseThrow();
+                .orElseThrow(NotAuthorizedException::new);
     }
 }
