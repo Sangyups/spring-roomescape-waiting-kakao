@@ -7,8 +7,9 @@ import nextstep.schedule.Schedule;
 import nextstep.schedule.ScheduleDao;
 import nextstep.support.DuplicateEntityException;
 import nextstep.support.NotExistEntityException;
-import nextstep.theme.Theme;
-import nextstep.theme.ThemeDao;
+import nextstep.theme.dao.ThemeDao;
+import nextstep.theme.domain.Theme;
+import nextstep.theme.mapper.ThemeMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -50,7 +51,7 @@ public class ReservationService {
     }
 
     public List<Reservation> findAllByThemeIdAndDate(Long themeId, String date) {
-        Theme theme = themeDao.findById(themeId);
+        Theme theme = ThemeMapper.INSTANCE.entityToDomain(themeDao.findById(themeId));
         if (theme == null) {
             throw new NullPointerException();
         }

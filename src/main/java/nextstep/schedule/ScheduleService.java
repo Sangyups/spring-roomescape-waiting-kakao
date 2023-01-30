@@ -1,7 +1,8 @@
 package nextstep.schedule;
 
-import nextstep.theme.Theme;
-import nextstep.theme.ThemeDao;
+import nextstep.theme.dao.ThemeDao;
+import nextstep.theme.domain.Theme;
+import nextstep.theme.mapper.ThemeMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,7 +18,7 @@ public class ScheduleService {
     }
 
     public Long create(ScheduleRequest scheduleRequest) {
-        Theme theme = themeDao.findById(scheduleRequest.getThemeId());
+        Theme theme = ThemeMapper.INSTANCE.entityToDomain(themeDao.findById(scheduleRequest.getThemeId()));
         return scheduleDao.save(scheduleRequest.toEntity(theme));
     }
 
