@@ -11,12 +11,9 @@ import java.util.Optional;
 @Service
 public class MemberService {
 
-    private final AuthRepository<Member> authRepository;
-
     private final MemberRepository memberRepository;
 
-    public MemberService(AuthRepository<Member> authRepository, MemberRepository memberRepository) {
-        this.authRepository = authRepository;
+    public MemberService(MemberRepository memberRepository) {
         this.memberRepository = memberRepository;
     }
 
@@ -28,7 +25,7 @@ public class MemberService {
 
     public Optional<Member> findById(Long id) {
 
-        return authRepository.findById(id)
+        return memberRepository.findById(id)
                 .map(MemberMapper.INSTANCE::abstractUserToDomain)
                 ;
     }
