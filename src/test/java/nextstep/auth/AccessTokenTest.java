@@ -1,6 +1,7 @@
 package nextstep.auth;
 
 import auth.domain.AccessToken;
+import auth.domain.Role;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -18,7 +19,7 @@ class AccessTokenTest {
     @DisplayName("새로운 토큰을 생성한다.")
     @Test
     void createToken() {
-        AccessToken token = AccessToken.create("1", "ADMIN");
+        AccessToken token = AccessToken.create("1", Role.ADMIN);
 
         assertThat(token.isValid()).isTrue();
     }
@@ -26,7 +27,7 @@ class AccessTokenTest {
     @DisplayName("토큰에서 memberId를 가져온다.")
     @Test
     void getPrincipal() {
-        AccessToken token = AccessToken.create("1", "ADMIN");
+        AccessToken token = AccessToken.create("1", Role.ADMIN);
 
         assertThat(token.getSub()).isEqualTo("1");
     }

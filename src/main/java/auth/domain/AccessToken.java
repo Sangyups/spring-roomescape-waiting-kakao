@@ -14,7 +14,7 @@ public class AccessToken extends Jwt {
 
     private final String accessToken;
     private String sub;
-    private AbstractUser.Role role;
+    private Role role;
     private boolean expired;
     private boolean unsupported;
     private boolean malformed;
@@ -33,13 +33,13 @@ public class AccessToken extends Jwt {
         return new AccessToken(token);
     }
 
-    public static AccessToken create(String sub, String role) {
+    public static AccessToken create(String sub, Role role) {
 
         return new AccessToken(createToken(sub, role));
     }
 
-    private static String createToken(String sub, String role) {
-        Claims claims = Jwts.claims(Map.of("role", role))
+    private static String createToken(String sub, Role role) {
+        Claims claims = Jwts.claims(Map.of("role", role.name()))
                 .setSubject(sub);
         Date now = new Date();
         Date validity = new Date(now.getTime() + EXPIRATION_SECOND);
@@ -57,15 +57,6 @@ public class AccessToken extends Jwt {
     public boolean isValid() {
 
         return !(expired | unsupported | malformed);
-    }
-
-    public String getRole() {
-
-        return PARSER_BUILDER
-                .parseClaimsJws(this.accessToken)
-                .getBody()
-                .get("role", String.class)
-                ;
     }
 
     private void validateToken() {
@@ -91,9 +82,9 @@ public class AccessToken extends Jwt {
                 ;
     }
 
-    private AbstractUser.Role extractRole() {
+    private Role extractRole() {
 
-        return AbstractUser.Role.of(PARSER_BUILDER
+        return Role.of(PARSER_BUILDER
                 .parseClaimsJws(this.accessToken)
                 .getBody()
                 .get("role")

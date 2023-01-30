@@ -1,6 +1,7 @@
 package nextstep.member.mapper;
 
 import auth.domain.AbstractUser;
+import auth.domain.Role;
 import nextstep.member.domain.Member;
 import nextstep.member.dto.MemberRequest;
 import nextstep.member.dto.MemberResponse;
@@ -39,16 +40,14 @@ public interface MemberMapper {
     MemberEntity abstractUserToEntity(AbstractUser abstractUser);
 
     @Mapping(target = "role", qualifiedByName = "roleMapper")
-    AbstractUser entityToAbstractUser(MemberEntity memberEntity);
-
-    AbstractUser domainToAbstractUser(Member member);
+    Member entityToDomain(MemberEntity memberEntity);
 
     @Named("roleMapper")
-    default AbstractUser.Role stringToEnumRole(String role) {
+    default Role stringToEnumRole(String role) {
         try {
-            return AbstractUser.Role.of(role);
+            return Role.of(role);
         } catch (NullPointerException e) {
-            return AbstractUser.Role.NONE;
+            return Role.NONE;
         }
     }
 }

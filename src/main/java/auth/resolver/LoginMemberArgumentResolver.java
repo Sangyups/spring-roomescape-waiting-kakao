@@ -1,9 +1,10 @@
 package auth.resolver;
 
 import auth.annotation.AuthRequired;
+import auth.domain.AbstractBaseUser;
 import auth.domain.AccessToken;
 import auth.exception.UnauthenticatedException;
-import auth.repository.MemberRepository;
+import auth.repository.AuthRepository;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.support.WebDataBinderFactory;
@@ -15,10 +16,10 @@ import java.util.Optional;
 
 public class LoginMemberArgumentResolver implements HandlerMethodArgumentResolver {
 
-    private final MemberRepository memberRepository;
+    private final AuthRepository<? extends AbstractBaseUser> authRepository;
 
-    public LoginMemberArgumentResolver(MemberRepository memberRepository) {
-        this.memberRepository = memberRepository;
+    public LoginMemberArgumentResolver(AuthRepository<? extends AbstractBaseUser> authRepository) {
+        this.authRepository = authRepository;
     }
 
     @Override
@@ -37,7 +38,7 @@ public class LoginMemberArgumentResolver implements HandlerMethodArgumentResolve
             throw new UnauthenticatedException();
         }
 
-        return memberRepository
+        return authRepository
                 .findById(Long.parseLong(accessToken.getSub()))
                 .orElseThrow(UnauthenticatedException::new)
                 ;

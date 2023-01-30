@@ -9,7 +9,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @SuperBuilder
 @Getter
 @AllArgsConstructor
-public class AbstractBaseUser {
+public abstract class AbstractBaseUser {
 
     private final Long id;
     private final String username;

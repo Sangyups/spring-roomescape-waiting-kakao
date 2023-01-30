@@ -1,7 +1,7 @@
 package nextstep.reservation;
 
 import auth.annotation.AuthRequired;
-import auth.domain.AbstractUser;
+import nextstep.member.domain.Member;
 import nextstep.member.mapper.MemberMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,8 +19,8 @@ public class ReservationController {
     }
 
     @PostMapping("/reservations")
-    public ResponseEntity createReservation(@AuthRequired AbstractUser user, @RequestBody ReservationRequest reservationRequest) {
-        Long id = reservationService.create(MemberMapper.INSTANCE.abstractUserToDomain(user), reservationRequest);
+    public ResponseEntity createReservation(@AuthRequired Member member, @RequestBody ReservationRequest reservationRequest) {
+        Long id = reservationService.create(MemberMapper.INSTANCE.abstractUserToDomain(member), reservationRequest);
         return ResponseEntity.created(URI.create("/reservations/" + id)).build();
     }
 
@@ -31,8 +31,8 @@ public class ReservationController {
     }
 
     @DeleteMapping("/reservations/{id}")
-    public ResponseEntity deleteReservation(@AuthRequired AbstractUser user, @PathVariable Long id) {
-        reservationService.deleteById(MemberMapper.INSTANCE.abstractUserToDomain(user), id);
+    public ResponseEntity deleteReservation(@AuthRequired Member member, @PathVariable Long id) {
+        reservationService.deleteById(MemberMapper.INSTANCE.abstractUserToDomain(member), id);
 
         return ResponseEntity.noContent().build();
     }

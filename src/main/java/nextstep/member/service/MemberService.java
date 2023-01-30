@@ -1,10 +1,9 @@
 package nextstep.member.service;
 
-import auth.domain.AbstractUser;
-import auth.repository.MemberRepository;
+import auth.repository.AuthRepository;
 import nextstep.member.domain.Member;
 import nextstep.member.mapper.MemberMapper;
-import org.springframework.beans.factory.annotation.Autowired;
+import nextstep.member.repository.MemberRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -12,23 +11,24 @@ import java.util.Optional;
 @Service
 public class MemberService {
 
+    private final AuthRepository<Member> authRepository;
+
     private final MemberRepository memberRepository;
 
-    @Autowired
-    public MemberService(MemberRepository memberRepository) {
+    public MemberService(AuthRepository<Member> authRepository, MemberRepository memberRepository) {
+        this.authRepository = authRepository;
         this.memberRepository = memberRepository;
     }
 
     public Long create(Member member) {
-        AbstractUser requestedMember = MemberMapper.INSTANCE.domainToAbstractUser(member);
-        requestedMember.encryptPassword();
+        member.encryptPassword();
 
-        return memberRepository.save(requestedMember);
+        return memberRepository.save(member);
     }
 
     public Optional<Member> findById(Long id) {
 
-        return memberRepository.findById(id)
+        return authRepository.findById(id)
                 .map(MemberMapper.INSTANCE::abstractUserToDomain)
                 ;
     }
