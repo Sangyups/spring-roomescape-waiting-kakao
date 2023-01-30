@@ -1,6 +1,5 @@
 package nextstep.member.service;
 
-import auth.repository.AuthRepository;
 import nextstep.member.domain.Member;
 import nextstep.member.mapper.MemberMapper;
 import nextstep.member.repository.MemberRepository;

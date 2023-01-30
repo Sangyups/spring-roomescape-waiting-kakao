@@ -1,8 +1,13 @@
-package nextstep.reservation;
+package nextstep.reservation.controller;
 
 import auth.annotation.AuthRequired;
 import nextstep.member.domain.Member;
-import nextstep.member.mapper.MemberMapper;
+import nextstep.reservation.domain.Reservation;
+import nextstep.reservation.dto.ReservationRequest;
+import nextstep.reservation.dto.ReservationResponse;
+import nextstep.reservation.mapper.ReservationMapper;
+import nextstep.reservation.service.ReservationService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,28 +20,29 @@ public class ReservationController {
 
     public final ReservationService reservationService;
 
+    @Autowired
     public ReservationController(ReservationService reservationService) {
         this.reservationService = reservationService;
     }
 
     @PostMapping
     public ResponseEntity createReservation(@AuthRequired Member member, @RequestBody ReservationRequest reservationRequest) {
-        Long id = reservationService.create(MemberMapper.INSTANCE.abstractUserToDomain(member), reservationRequest);
+        Long id = reservationService.create(reservationRequest.getScheduleId(), member.getId());
+
         return ResponseEntity.created(URI.create("/reservations/" + id)).build();
     }
 
     @GetMapping
-    public ResponseEntity readReservations(@RequestParam Long themeId, @RequestParam String date) {
-        List<Reservation> results = reservationService.findAllByThemeIdAndDate(themeId, date);
-        return ResponseEntity.ok().body(results);
+    public ResponseEntity<List<ReservationResponse>> readReservations(@RequestParam Long themeId, @RequestParam String date) {
+        List<Reservation> reservations = reservationService.findAllByThemeIdAndDate(themeId, date);
+
+        return ResponseEntity.ok().body(ReservationMapper.INSTANCE.domainListToDtoList(reservations));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity deleteReservation(@AuthRequired Member member, @PathVariable Long id) {
-        reservationService.deleteById(MemberMapper.INSTANCE.abstractUserToDomain(member), id);
+        reservationService.delete(id);
 
         return ResponseEntity.noContent().build();
     }
-
-
 }
