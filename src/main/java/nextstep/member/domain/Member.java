@@ -1,6 +1,7 @@
 package nextstep.member.domain;
 
 import auth.domain.AbstractUser;
+import auth.domain.Role;
 import lombok.Getter;
 import lombok.experimental.SuperBuilder;
 

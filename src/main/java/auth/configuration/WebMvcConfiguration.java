@@ -1,7 +1,8 @@
 package auth.configuration;
 
+import auth.domain.AbstractBaseUser;
 import auth.interceptor.AdminInterceptor;
-import auth.repository.MemberRepository;
+import auth.repository.AuthRepository;
 import auth.resolver.LoginMemberArgumentResolver;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
@@ -13,10 +14,10 @@ import java.util.List;
 @Configuration
 public class WebMvcConfiguration implements WebMvcConfigurer {
 
-    private final MemberRepository memberRepository;
+    private final AuthRepository<? extends AbstractBaseUser> authRepository;
 
-    public WebMvcConfiguration(MemberRepository memberRepository) {
-        this.memberRepository = memberRepository;
+    public WebMvcConfiguration(AuthRepository<? extends AbstractBaseUser> authRepository) {
+        this.authRepository = authRepository;
     }
 
     @Override
@@ -26,6 +27,6 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
 
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
-        argumentResolvers.add(new LoginMemberArgumentResolver(memberRepository));
+        argumentResolvers.add(new LoginMemberArgumentResolver(authRepository));
     }
 }

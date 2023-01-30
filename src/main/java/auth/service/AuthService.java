@@ -1,21 +1,23 @@
 package auth.service;
 
+import auth.domain.AbstractBaseUser;
 import auth.domain.AbstractUser;
 import auth.domain.AccessToken;
+import auth.domain.Role;
 import auth.exception.UnauthenticatedException;
 import auth.exception.UserNotFoundException;
-import auth.repository.MemberRepository;
+import auth.repository.AuthRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class AuthService {
 
-    private final MemberRepository memberRepository;
+    private final AuthRepository<? extends AbstractBaseUser> authRepository;
 
     @Autowired
-    public AuthService(MemberRepository memberRepository) {
-        this.memberRepository = memberRepository;
+    public AuthService(AuthRepository<? extends AbstractBaseUser> authRepository) {
+        this.authRepository = authRepository;
     }
 
     public AccessToken login(String username, String password) {
@@ -24,12 +26,17 @@ public class AuthService {
                 .password(password)
                 .build();
 
-        AbstractUser existUser = memberRepository.findByUsername(requestedUser.getUsername())
+        var existUser = authRepository.findByUsername(requestedUser.getUsername())
                 .orElseThrow(UserNotFoundException::new);
         if (!existUser.matchPassword(requestedUser)) {
             throw new UnauthenticatedException();
         }
 
-        return AccessToken.create(String.valueOf(existUser.getId()), existUser.getRole().name());
+        Role role = Role.USER;
+        if (existUser instanceof AbstractUser) {
+            role = ((AbstractUser) existUser).getRole();
+        }
+
+        return AccessToken.create(String.valueOf(existUser.getId()), role);
     }
 }
