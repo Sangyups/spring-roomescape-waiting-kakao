@@ -7,6 +7,7 @@ import nextstep.waiting.mapper.WaitingMapper;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Repository
@@ -16,11 +17,23 @@ public class WaitingRepositoryImpl implements WaitingRepository {
     private final WaitingDao waitingDao;
 
     @Override
+    public Optional<Waiting> findById(Long id) {
+
+        return Optional.empty();
+    }
+
+    @Override
     public List<Waiting> findByMemberId(Long memberId) {
 
         return waitingDao.findByMemberId(memberId).stream()
                 .map(WaitingMapper.INSTANCE::entityToDomain)
                 .collect(Collectors.toList())
                 ;
+    }
+
+    @Override
+    public int deleteById(Long id) {
+
+        return waitingDao.deleteById(id);
     }
 }
