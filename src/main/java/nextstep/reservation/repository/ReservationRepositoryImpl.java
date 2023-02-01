@@ -38,6 +38,11 @@ public class ReservationRepositoryImpl implements ReservationRepository {
     }
 
     @Override
+    public List<Reservation> findAllByMemberId(Long memberId) {
+        return ReservationMapper.INSTANCE.entityListToDomainList(reservationDao.findByMemberId(memberId));
+    }
+
+    @Override
     public int deleteById(Long id) {
 
         return reservationDao.deleteById(id);

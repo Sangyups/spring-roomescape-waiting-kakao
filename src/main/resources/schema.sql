@@ -39,3 +39,24 @@ CREATE TABLE member
     primary key (id),
     unique (username)
 );
+
+DROP TABLE IF EXISTS reservation_waiting;
+CREATE TABLE reservation_waiting
+(
+    id            bigint  not null auto_increment,
+    member_id     bigint  not null,
+    schedule_id   bigint  not null,
+    waiting_count bigint  not null,
+    is_deleted    tinyint not null default 0,
+    primary key (id)
+);
+
+--- Table for optimistic lock
+DROP TABLE IF EXISTS waiting_counter;
+CREATE TABLE waiting_counter
+(
+    schedule_id   bigint not null,
+    waiting_count bigint not null,
+    primary key (schedule_id),
+    foreign key (schedule_id) references schedule (id),
+);

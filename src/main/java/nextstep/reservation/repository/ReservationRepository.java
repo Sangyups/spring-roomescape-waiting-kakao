@@ -13,5 +13,7 @@ public interface ReservationRepository {
 
     List<Reservation> findByScheduleId(Long scheduleId);
 
+    List<Reservation> findAllByMemberId(Long memberId);
+
     int deleteById(Long id);
 }

@@ -1,6 +1,5 @@
-package nextstep.reservation.dto;
+package nextstep.waiting.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -8,10 +7,9 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ReservationResponse {
+public class WaitingResponse {
 
     private Long id;
     private Long scheduleId;
-    @JsonIgnore
-    private Long memberId;
+    private Long waitingCount;
 }
