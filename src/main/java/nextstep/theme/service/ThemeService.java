@@ -1,6 +1,6 @@
 package nextstep.theme.service;
 
-import nextstep.support.NotExistEntityException;
+import nextstep.global.exception.NotExistEntityException;
 import nextstep.theme.domain.Theme;
 import nextstep.theme.repository.ThemeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,9 +18,9 @@ public class ThemeService {
         this.themeRepository = themeRepository;
     }
 
-    public Long create(String name, String desc, int price) {
+    public Long create(String name, String description, int price) {
 
-        return themeRepository.save(Theme.of(name, desc, price));
+        return themeRepository.save(Theme.of(name, description, price));
     }
 
     public List<Theme> findAll() {

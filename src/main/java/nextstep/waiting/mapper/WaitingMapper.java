@@ -24,4 +24,6 @@ public interface WaitingMapper {
 
         return new WaitingResponse(id, scheduleId, waitingCount);
     }
+
+    WaitingEntity domainToEntity(Waiting waiting);
 }

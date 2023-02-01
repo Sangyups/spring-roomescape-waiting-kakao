@@ -9,11 +9,11 @@ public class Theme {
 
     private Long id;
     private String name;
-    private String desc;
+    private String description;
     private int price;
 
-    public static Theme of(String name, String desc, int price) {
+    public static Theme of(String name, String description, int price) {
 
-        return new Theme(null, name, desc, price);
+        return new Theme(null, name, description, price);
     }
 }

@@ -11,5 +11,5 @@ public class WaitingEntity {
     private final Long memberId;
     private final Long scheduleId;
     private final Long waitingCount;
-    private final boolean isDeleted;
+    private final boolean deleted;
 }

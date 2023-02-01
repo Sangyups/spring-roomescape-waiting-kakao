@@ -20,10 +20,10 @@ public interface ThemeMapper {
 
         Long id = theme.getId();
         String name = theme.getName();
-        String desc = theme.getDesc();
+        String description = theme.getDescription();
         int price = theme.getPrice();
 
-        return new ThemeResponse(id, name, desc, price);
+        return new ThemeResponse(id, name, description, price);
     }
 
     List<ThemeResponse> domainListToResponseDtoList(List<Theme> themes);

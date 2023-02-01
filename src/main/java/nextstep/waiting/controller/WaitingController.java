@@ -22,8 +22,8 @@ public class WaitingController {
     private final WaitingService waitingService;
 
     @PostMapping
-    public ResponseEntity<Void> createWaiting(@RequestBody WaitingRequest waitingRequest) {
-        Long id = waitingService.create(waitingRequest.getScheduleId());
+    public ResponseEntity<Void> createWaiting(@RequestBody WaitingRequest waitingRequest, @AuthRequired Member member) {
+        Long id = waitingService.create(waitingRequest.getScheduleId(), member.getId());
 
         return ResponseEntity.created(URI.create("/reservation-waitings/" + id)).build();
     }
@@ -38,8 +38,8 @@ public class WaitingController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteMyWaiting(@AuthRequired Member member, @PathVariable("id") Long id) {
-        waitingService.deleteMyWaiting(member.getId(), id);
+    public ResponseEntity<Void> deleteMyWaiting(@PathVariable("id") Long id, @AuthRequired Member member) {
+        waitingService.deleteMyWaiting(id, member.getId());
 
         return ResponseEntity.noContent().build();
     }

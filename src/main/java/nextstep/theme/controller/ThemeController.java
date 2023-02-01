@@ -24,7 +24,7 @@ public class ThemeController {
 
     @PostMapping("/admin/themes")
     public ResponseEntity createTheme(@RequestBody ThemeRequest themeRequest) {
-        Long id = themeService.create(themeRequest.getName(), themeRequest.getDesc(), themeRequest.getPrice());
+        Long id = themeService.create(themeRequest.getName(), themeRequest.getDescription(), themeRequest.getPrice());
 
         return ResponseEntity.created(URI.create("/themes/" + id)).build();
     }
