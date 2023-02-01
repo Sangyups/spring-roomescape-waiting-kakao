@@ -66,4 +66,12 @@ public class ReservationDao {
 
         return jdbcTemplate.update(sql, id);
     }
+
+    public List<ReservationEntity> findByMemberId(Long memberId) {
+        String sql = "SELECT id, schedule_id, member_id " +
+                "FROM reservation " +
+                "WHERE member_id = ?;";
+
+        return jdbcTemplate.query(sql, rowMapper, memberId);
+    }
 }

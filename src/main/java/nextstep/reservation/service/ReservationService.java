@@ -57,6 +57,11 @@ public class ReservationService {
                 ;
     }
 
+    public List<Reservation> findAllByMemberId(Long memberId) {
+
+        return reservationRepository.findAllByMemberId(memberId);
+    }
+
     public void delete(Long id) {
         if (reservationRepository.deleteById(id) == 0) {
             throw new NotExistEntityException();

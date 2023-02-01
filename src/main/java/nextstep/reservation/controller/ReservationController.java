@@ -33,10 +33,17 @@ public class ReservationController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ReservationResponse>> readReservations(@RequestParam Long themeId, @RequestParam String date) {
+    public ResponseEntity<List<ReservationResponse>> getReservations(@RequestParam Long themeId, @RequestParam String date) {
         List<Reservation> reservations = reservationService.findAllByThemeIdAndDate(themeId, date);
 
         return ResponseEntity.ok().body(ReservationMapper.INSTANCE.domainListToDtoList(reservations));
+    }
+
+    @GetMapping("/mine")
+    public ResponseEntity<List<ReservationResponse>> getMyReservations(@AuthRequired Member member) {
+        List<Reservation> reservations = reservationService.findAllByMemberId(member.getId());
+
+        return ResponseEntity.ok(ReservationMapper.INSTANCE.domainListToDtoList(reservations));
     }
 
     @DeleteMapping("/{id}")
