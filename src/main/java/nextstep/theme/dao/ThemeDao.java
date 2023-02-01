@@ -18,7 +18,7 @@ public class ThemeDao {
     private final RowMapper<ThemeEntity> rowMapper = (resultSet, rowNum) -> new ThemeEntity(
             resultSet.getLong("id"),
             resultSet.getString("name"),
-            resultSet.getString("desc"),
+            resultSet.getString("description"),
             resultSet.getInt("price")
     );
     private final JdbcTemplate jdbcTemplate;
@@ -29,13 +29,13 @@ public class ThemeDao {
     }
 
     public Long save(ThemeEntity themeEntity) {
-        String sql = "INSERT INTO theme (name, desc, price) VALUES (?, ?, ?);";
+        String sql = "INSERT INTO theme (name, description, price) VALUES (?, ?, ?);";
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
         jdbcTemplate.update(connection -> {
             PreparedStatement ps = connection.prepareStatement(sql, new String[]{"id"});
             ps.setString(1, themeEntity.getName());
-            ps.setString(2, themeEntity.getDesc());
+            ps.setString(2, themeEntity.getDescription());
             ps.setInt(3, themeEntity.getPrice());
             return ps;
         }, keyHolder);
@@ -47,13 +47,13 @@ public class ThemeDao {
     }
 
     public ThemeEntity findById(Long id) {
-        String sql = "SELECT id, name, desc, price FROM theme WHERE id = ?;";
+        String sql = "SELECT id, name, description, price FROM theme WHERE id = ?;";
 
         return jdbcTemplate.queryForObject(sql, rowMapper, id);
     }
 
     public List<ThemeEntity> findAll() {
-        String sql = "SELECT id, name, desc, price FROM theme;";
+        String sql = "SELECT id, name, description, price FROM theme;";
 
         return jdbcTemplate.query(sql, rowMapper);
     }

@@ -10,6 +10,6 @@ import lombok.NoArgsConstructor;
 public class ThemeRequest {
 
     private String name;
-    private String desc;
+    private String description;
     private int price;
 }

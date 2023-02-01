@@ -13,7 +13,16 @@ public class Waiting {
     private final Long scheduleId;
     private final Long waitingCount;
     private final Long memberId;
-    private boolean isDeleted;
+    private boolean deleted;
+
+    public static Waiting of(Long scheduleId, Long waitingCount, Long memberId) {
+
+        return Waiting.builder()
+                .scheduleId(scheduleId)
+                .waitingCount(waitingCount)
+                .memberId(memberId)
+                .build();
+    }
 
     public boolean assignedTo(Long memberId) {
 

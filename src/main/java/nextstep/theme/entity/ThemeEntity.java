@@ -9,6 +9,6 @@ public class ThemeEntity {
 
     private Long id;
     private String name;
-    private String desc;
+    private String description;
     private int price;
 }
