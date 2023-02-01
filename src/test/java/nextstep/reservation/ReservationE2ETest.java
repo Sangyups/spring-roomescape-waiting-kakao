@@ -6,6 +6,7 @@ import io.restassured.response.Response;
 import nextstep.AbstractE2ETest;
 import nextstep.reservation.domain.Reservation;
 import nextstep.reservation.dto.ReservationRequest;
+import nextstep.reservation.dto.ReservationResponse;
 import nextstep.schedule.dto.ScheduleRequest;
 import nextstep.theme.dto.ThemeRequest;
 import org.junit.jupiter.api.BeforeEach;
@@ -20,13 +21,12 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class ReservationE2ETest extends AbstractE2ETest {
+public class ReservationE2ETest extends AbstractE2ETest {
     public static final String DATE = "2022-08-11";
     public static final String TIME = "13:00";
 
     private ReservationRequest request;
     private Long themeId;
-    private Long scheduleId;
 
     @BeforeEach
     public void setUp() {
@@ -55,7 +55,7 @@ class ReservationE2ETest extends AbstractE2ETest {
                 .statusCode(HttpStatus.CREATED.value())
                 .extract();
         String[] scheduleLocation = scheduleResponse.header("Location").split("/");
-        scheduleId = Long.parseLong(scheduleLocation[scheduleLocation.length - 1]);
+        Long scheduleId = Long.parseLong(scheduleLocation[scheduleLocation.length - 1]);
 
         request = new ReservationRequest(
                 scheduleId
@@ -181,6 +181,24 @@ class ReservationE2ETest extends AbstractE2ETest {
                 .extract();
 
         assertThat(response.statusCode()).isEqualTo(HttpStatus.UNAUTHORIZED.value());
+    }
+
+    @DisplayName("자신의 예약을 조회한다.")
+    @Test
+    void getMyReservation() {
+        var reservationLocation = createReservation().header("Location").split("/");
+        var reservationId = Long.parseLong(reservationLocation[reservationLocation.length - 1]);
+
+        var response = RestAssured
+                .given().log().all()
+                .auth().oauth2(token.getAccessToken())
+                .when().get("/reservations/mine")
+                .then().log().all()
+                .statusCode(HttpStatus.OK.value())
+                .extract();
+        var myReservations = response.jsonPath().getList(".", ReservationResponse.class);
+
+        assertThat(myReservations.stream().anyMatch(r -> r.getId() == reservationId)).isTrue();
     }
 
     private ExtractableResponse<Response> createReservation() {
