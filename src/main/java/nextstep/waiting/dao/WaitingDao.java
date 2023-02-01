@@ -25,8 +25,14 @@ public class WaitingDao {
     public List<WaitingEntity> findByMemberId(Long memberId) {
         String sql = "SELECT id, member_id, schedule_id, waiting_count, is_deleted " +
                 "FROM waiting " +
-                "WHERE member_id = ?;";
+                "WHERE member_id = ? AND is_deleted = 0;";
 
         return jdbcTemplate.query(sql, rowMapper, memberId);
+    }
+
+    public int deleteById(Long id) {
+        String sql = "UPDATE waiting SET is_deleted = 1 WHERE id = ?";
+
+        return jdbcTemplate.update(sql, id);
     }
 }

@@ -36,4 +36,11 @@ public class WaitingController {
 
         return ResponseEntity.ok(waitingResponses);
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteMyWaiting(@AuthRequired Member member, @PathVariable("id") Long id) {
+        waitingService.deleteMyWaiting(member.getId(), id);
+
+        return ResponseEntity.noContent().build();
+    }
 }

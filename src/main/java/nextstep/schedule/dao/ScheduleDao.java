@@ -66,8 +66,9 @@ public class ScheduleDao {
     }
 
     public int deleteById(Long id) {
+        String sql = "DELETE FROM schedule WHERE id = ?;";
 
-        return jdbcTemplate.update("DELETE FROM schedule WHERE id = ?;", id);
+        return jdbcTemplate.update(sql, id);
     }
 
 }
