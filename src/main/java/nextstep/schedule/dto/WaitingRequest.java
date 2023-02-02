@@ -1,4 +1,4 @@
-package nextstep.waiting.dto;
+package nextstep.schedule.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

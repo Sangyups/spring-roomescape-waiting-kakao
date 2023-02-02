@@ -1,4 +1,4 @@
-package nextstep.waiting.entity;
+package nextstep.schedule.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
