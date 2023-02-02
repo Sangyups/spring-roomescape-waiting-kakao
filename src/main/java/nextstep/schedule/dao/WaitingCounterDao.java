@@ -1,7 +1,7 @@
-package nextstep.waiting.dao;
+package nextstep.schedule.dao;
 
 import lombok.RequiredArgsConstructor;
-import nextstep.waiting.entity.WaitingCounterEntity;
+import nextstep.schedule.entity.WaitingCounterEntity;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;

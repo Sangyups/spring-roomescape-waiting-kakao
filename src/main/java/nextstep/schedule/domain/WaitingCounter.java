@@ -1,12 +1,13 @@
-package nextstep.waiting.entity;
+package nextstep.schedule.domain;
+
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class WaitingCounterEntity {
+public class WaitingCounter {
 
-    private Long scheduleId;
     private Long waitingCount;
+    private Long scheduleId;
 }

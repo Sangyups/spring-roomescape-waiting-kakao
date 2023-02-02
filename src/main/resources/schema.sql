@@ -1,5 +1,4 @@
 DROP TABLE IF EXISTS waiting_counter;
-DROP TABLE IF EXISTS reservation_waiting;
 DROP TABLE IF EXISTS member;
 DROP TABLE IF EXISTS reservation;
 DROP TABLE IF EXISTS schedule;
@@ -10,7 +9,11 @@ CREATE TABLE reservation
     id          bigint not null auto_increment,
     schedule_id bigint not null,
     member_id   bigint not null,
-    primary key (id)
+    status varchar(255) not null,
+    waiting_count bigint not null,
+    primary key (id),
+    key schedule_idx(schedule_id),
+    key member_idx(member_id)
 );
 
 
@@ -33,7 +36,6 @@ CREATE TABLE schedule
     primary key (id)
 );
 
-
 CREATE TABLE member
 (
     id       bigint       not null auto_increment,
@@ -46,17 +48,6 @@ CREATE TABLE member
     unique (username)
 );
 
-CREATE TABLE reservation_waiting
-(
-    id            bigint  not null auto_increment,
-    member_id     bigint  not null,
-    schedule_id   bigint  not null,
-    waiting_count bigint  not null,
-    is_deleted    tinyint not null default 0,
-    primary key (id)
-);
-
--- Table for optimistic lock
 CREATE TABLE waiting_counter
 (
     schedule_id   bigint not null,

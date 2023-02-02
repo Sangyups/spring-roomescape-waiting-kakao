@@ -1,7 +1,7 @@
-package nextstep.waiting.mapper;
+package nextstep.schedule.mapper;
 
-import nextstep.waiting.domain.WaitingCounter;
-import nextstep.waiting.entity.WaitingCounterEntity;
+import nextstep.schedule.domain.WaitingCounter;
+import nextstep.schedule.entity.WaitingCounterEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
