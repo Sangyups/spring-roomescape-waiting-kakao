@@ -4,12 +4,12 @@ import lombok.RequiredArgsConstructor;
 import nextstep.schedule.dao.ReservationDao;
 import nextstep.schedule.dao.WaitingCounterDao;
 import nextstep.schedule.domain.Reservation;
+import nextstep.schedule.domain.ReservationList;
 import nextstep.schedule.domain.WaitingCounter;
 import nextstep.schedule.mapper.ReservationMapper;
 import nextstep.schedule.mapper.WaitingCounterMapper;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Repository;
-
-import java.util.List;
 
 @Repository
 @RequiredArgsConstructor
@@ -19,8 +19,7 @@ public class ReservationRepositoryImpl implements ReservationRepository {
     private final WaitingCounterDao waitingCounterDao;
 
     @Override
-    public Long save(Reservation reservation) {
-
+    public Long save(Reservation reservation) throws DuplicateKeyException {
         return reservationDao.save(ReservationMapper.INSTANCE.domainToEntity(reservation));
     }
 
@@ -30,19 +29,18 @@ public class ReservationRepositoryImpl implements ReservationRepository {
     }
 
     @Override
-    public List<Reservation> findByScheduleId(Long scheduleId) {
-
-        return ReservationMapper.INSTANCE.entityListToDomainList(reservationDao.findByScheduleId(scheduleId));
+    public ReservationList findByScheduleId(Long scheduleId) {
+        return ReservationMapper.INSTANCE.entityListToReservationList(reservationDao.findByScheduleId(scheduleId));
     }
 
     @Override
-    public List<Reservation> findAllAcceptedByMemberId(Long memberId) {
-        return ReservationMapper.INSTANCE.entityListToDomainList(reservationDao.findAcceptedByMemberId(memberId));
+    public ReservationList findAllAcceptedByMemberId(Long memberId) {
+        return ReservationMapper.INSTANCE.entityListToReservationList(reservationDao.findAcceptedByMemberId(memberId));
     }
 
     @Override
-    public List<Reservation> findAllWaitingByMemberId(Long memberId) {
-        return ReservationMapper.INSTANCE.entityListToDomainList(reservationDao.findWaitingByMemberId(memberId));
+    public ReservationList findAllWaitingByMemberId(Long memberId) {
+        return ReservationMapper.INSTANCE.entityListToReservationList(reservationDao.findWaitingByMemberId(memberId));
     }
 
     @Override
@@ -58,9 +56,6 @@ public class ReservationRepositoryImpl implements ReservationRepository {
 
     @Override
     public WaitingCounter findWaitingCounterByScheduleId(Long scheduleId) {
-
         return WaitingCounterMapper.INSTANCE.entityToDomain(waitingCounterDao.findByScheduleId(scheduleId));
     }
-
-
 }

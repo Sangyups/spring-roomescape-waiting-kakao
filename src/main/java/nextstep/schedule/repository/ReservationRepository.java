@@ -1,21 +1,21 @@
 package nextstep.schedule.repository;
 
 import nextstep.schedule.domain.Reservation;
+import nextstep.schedule.domain.ReservationList;
 import nextstep.schedule.domain.WaitingCounter;
-
-import java.util.List;
+import org.springframework.dao.DuplicateKeyException;
 
 public interface ReservationRepository {
 
-    Long save(Reservation reservation);
+    Long save(Reservation reservation) throws DuplicateKeyException;
 
     Reservation findById(Long id);
 
-    List<Reservation> findByScheduleId(Long scheduleId);
+    ReservationList findByScheduleId(Long scheduleId);
 
-    List<Reservation> findAllAcceptedByMemberId(Long memberId);
+    ReservationList findAllAcceptedByMemberId(Long memberId);
 
-    List<Reservation> findAllWaitingByMemberId(Long memberId);
+    ReservationList findAllWaitingByMemberId(Long memberId);
 
     int deleteById(Long id);
 

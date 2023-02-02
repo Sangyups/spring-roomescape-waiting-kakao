@@ -3,15 +3,17 @@ package nextstep.schedule.controller;
 import auth.annotation.AuthRequired;
 import lombok.RequiredArgsConstructor;
 import nextstep.member.domain.Member;
+import nextstep.schedule.domain.Reservation;
 import nextstep.schedule.dto.ReservationRequest;
 import nextstep.schedule.dto.ReservationResponse;
 import nextstep.schedule.dto.WaitingResponse;
 import nextstep.schedule.mapper.ReservationMapper;
 import nextstep.schedule.service.ReservationService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.net.URI;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,7 +25,8 @@ public class ReservationController {
 
     @GetMapping("/reservations/mine")
     public ResponseEntity<List<ReservationResponse>> getMyReservations(@AuthRequired Member member) {
-        List<ReservationResponse> reservationResponses = reservationService.findAllAcceptedByMemberId(member.getId()).stream()
+        List<Reservation> reservationList = reservationService.findAllAcceptedByMemberId(member.getId()).getReservationList();
+        List<ReservationResponse> reservationResponses = reservationList.stream()
                 .map(ReservationMapper.INSTANCE::domainToResponseDto)
                 .collect(Collectors.toList());
 
@@ -31,15 +34,16 @@ public class ReservationController {
     }
 
     @PostMapping("/reservation-waitings")
-    public ResponseEntity<Void> createWaiting(@RequestBody ReservationRequest reservationRequest, @AuthRequired Member member) {
-        Long id = reservationService.create(reservationRequest.getScheduleId(), member.getId());
+    public ResponseEntity<Void> createWaiting(@RequestBody ReservationRequest reservationRequest, @AuthRequired Member member) throws SQLIntegrityConstraintViolationException {
+        reservationService.create(reservationRequest.getScheduleId(), member.getId());
 
-        return ResponseEntity.created(URI.create("/reservation-waitings/" + id)).build();
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @GetMapping("/reservation-waitings/mine")
     public ResponseEntity<List<WaitingResponse>> getMyWaiting(@AuthRequired Member member) {
-        List<WaitingResponse> waitingResponses = reservationService.findAllWaitingByMemberId(member.getId()).stream()
+        List<Reservation> reservationList = reservationService.findAllWaitingByMemberId((member.getId())).getReservationList();
+        List<WaitingResponse> waitingResponses = reservationList.stream()
                 .map(ReservationMapper.INSTANCE::domainToWaitingResponseDto)
                 .collect(Collectors.toList());
 

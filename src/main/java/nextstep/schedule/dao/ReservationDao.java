@@ -3,6 +3,7 @@ package nextstep.schedule.dao;
 import nextstep.schedule.domain.ReservationStatus;
 import nextstep.schedule.entity.ReservationEntity;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -30,7 +31,7 @@ public class ReservationDao {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public Long save(ReservationEntity reservationEntity) {
+    public Long save(ReservationEntity reservationEntity) throws DuplicateKeyException {
         String sql = "INSERT INTO reservation (schedule_id, member_id, waiting_count, status) VALUES (?, ?, ?, ?);";
         KeyHolder keyHolder = new GeneratedKeyHolder();
 

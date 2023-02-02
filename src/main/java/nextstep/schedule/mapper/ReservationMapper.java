@@ -1,6 +1,7 @@
 package nextstep.schedule.mapper;
 
 import nextstep.schedule.domain.Reservation;
+import nextstep.schedule.domain.ReservationList;
 import nextstep.schedule.domain.ReservationStatus;
 import nextstep.schedule.dto.ReservationResponse;
 import nextstep.schedule.dto.WaitingResponse;
@@ -43,11 +44,17 @@ public interface ReservationMapper {
 
     }
 
-    List<ReservationResponse> domainListToDtoList(List<Reservation> reservations);
-
     Reservation entityToDomain(ReservationEntity reservationEntity);
 
     List<Reservation> entityListToDomainList(List<ReservationEntity> reservationEntities);
+
+    default ReservationList domainListToReservationList(List<Reservation> reservations) {
+        return new ReservationList(reservations);
+    }
+
+    default ReservationList entityListToReservationList(List<ReservationEntity> reservationEntities) {
+        return domainListToReservationList(entityListToDomainList(reservationEntities));
+    }
 
     ReservationEntity domainToEntity(Reservation reservation);
 }

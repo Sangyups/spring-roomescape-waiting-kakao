@@ -2,46 +2,65 @@ package nextstep.schedule.service;
 
 
 import auth.exception.NotAuthorizedException;
+import nextstep.global.exception.AlreadyReservedException;
 import nextstep.global.exception.NotExistEntityException;
 import nextstep.schedule.domain.Reservation;
+import nextstep.schedule.domain.ReservationList;
 import nextstep.schedule.domain.ReservationStatus;
-import nextstep.schedule.domain.Schedule;
 import nextstep.schedule.repository.ReservationRepository;
 import nextstep.schedule.repository.ScheduleRepository;
-import nextstep.theme.repository.ThemeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Comparator;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class ReservationService {
 
     private final ReservationRepository reservationRepository;
     private final ScheduleRepository scheduleRepository;
-    private final ThemeRepository themeRepository;
 
     @Autowired
-    public ReservationService(ReservationRepository reservationRepository, ScheduleRepository scheduleRepository, ThemeRepository themeRepository) {
+    public ReservationService(ReservationRepository reservationRepository, ScheduleRepository scheduleRepository) {
         this.reservationRepository = reservationRepository;
         this.scheduleRepository = scheduleRepository;
-        this.themeRepository = themeRepository;
     }
 
-    // TODO:
-    //  1. 예약이 없는 스케줄에 대해서 예약 대기 신청을 할 경우 예약이 된다,
-    //  2. 이미 예약한 스케줄에는 다시 예약할 수 없다
-    @Transactional
     public Long create(Long scheduleId, Long memberId) {
+        final int TRY_OUT = 5;
+        boolean exit = false;
+        Long id = -1L;
+        for (int i = 0; i < TRY_OUT && !exit; i++) {
+            try {
+                id = createTransaction(scheduleId, memberId);
+            } catch (DuplicateKeyException ignored) {
+            }
+            exit = true;
+        }
+        return id;
+    }
+
+    @Transactional
+    public Long createTransaction(Long scheduleId, Long memberId) throws DuplicateKeyException {
         scheduleRepository.findById(scheduleId)
                 .orElseThrow(NotExistEntityException::new);
 
-        Long currentWaitingCount = increaseWaitingCount(scheduleId);
+        ReservationList reservationList = reservationRepository.findByScheduleId(scheduleId);
 
-        Reservation newReservation = Reservation.of(scheduleId, memberId, currentWaitingCount, ReservationStatus.WAITING);
+        if (reservationList.hasMember(memberId)) {
+            throw new AlreadyReservedException();
+        }
+
+        Long currentWaitingCount = 0L;
+        ReservationStatus status = ReservationStatus.ACCEPTED;
+
+        if (!reservationList.isEmpty()) {
+            currentWaitingCount = increaseWaitingCount(scheduleId);
+            status = ReservationStatus.WAITING;
+        }
+
+        Reservation newReservation = Reservation.of(scheduleId, memberId, currentWaitingCount, status);
 
         return reservationRepository.save(newReservation);
     }
@@ -53,27 +72,13 @@ public class ReservationService {
         return reservationRepository.findWaitingCounterByScheduleId(scheduleId).getWaitingCount();
     }
 
-    public List<Reservation> findAllByThemeIdAndDate(Long themeId, String date) {
-        themeRepository.findById(themeId)
-                .orElseThrow(NotExistEntityException::new);
-
-        List<Schedule> scheduleList = scheduleRepository.findByThemeIdAndDate(themeId, date);
-
-        return scheduleList.stream()
-                .map(schedule -> reservationRepository.findByScheduleId(schedule.getId()))
-                .flatMap(List::stream)
-                .sorted(Comparator.comparingLong(Reservation::getId))
-                .collect(Collectors.toList())
-                ;
-    }
-
-    public List<Reservation> findAllAcceptedByMemberId(Long memberId) {
+    public ReservationList findAllAcceptedByMemberId(Long memberId) {
 
         return reservationRepository.findAllAcceptedByMemberId(memberId);
     }
 
 
-    public List<Reservation> findAllWaitingByMemberId(Long memberId) {
+    public ReservationList findAllWaitingByMemberId(Long memberId) {
 
         return reservationRepository.findAllWaitingByMemberId(memberId);
     }
