@@ -4,25 +4,29 @@ import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import nextstep.AbstractE2ETest;
-import nextstep.schedule.ScheduleRequest;
-import nextstep.theme.ThemeRequest;
+import nextstep.schedule.domain.Reservation;
+import nextstep.schedule.dto.ReservationRequest;
+import nextstep.schedule.dto.ReservationResponse;
+import nextstep.schedule.dto.ScheduleRequest;
+import nextstep.theme.dto.ThemeRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class ReservationE2ETest extends AbstractE2ETest {
+public class ReservationE2ETest extends AbstractE2ETest {
     public static final String DATE = "2022-08-11";
     public static final String TIME = "13:00";
 
     private ReservationRequest request;
     private Long themeId;
-    private Long scheduleId;
 
     @BeforeEach
     public void setUp() {
@@ -40,7 +44,7 @@ class ReservationE2ETest extends AbstractE2ETest {
         String[] themeLocation = themeResponse.header("Location").split("/");
         themeId = Long.parseLong(themeLocation[themeLocation.length - 1]);
 
-        ScheduleRequest scheduleRequest = new ScheduleRequest(themeId, DATE, TIME);
+        ScheduleRequest scheduleRequest = new ScheduleRequest(themeId, LocalDate.parse(DATE), LocalTime.parse(TIME));
         var scheduleResponse = RestAssured
                 .given().log().all()
                 .auth().oauth2(token.getAccessToken())
@@ -51,7 +55,7 @@ class ReservationE2ETest extends AbstractE2ETest {
                 .statusCode(HttpStatus.CREATED.value())
                 .extract();
         String[] scheduleLocation = scheduleResponse.header("Location").split("/");
-        scheduleId = Long.parseLong(scheduleLocation[scheduleLocation.length - 1]);
+        Long scheduleId = Long.parseLong(scheduleLocation[scheduleLocation.length - 1]);
 
         request = new ReservationRequest(
                 scheduleId
@@ -133,7 +137,7 @@ class ReservationE2ETest extends AbstractE2ETest {
                 .then().log().all()
                 .extract();
 
-        assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.CONFLICT.value());
     }
 
     @DisplayName("예약이 없을 때 예약 목록을 조회한다")
@@ -161,7 +165,7 @@ class ReservationE2ETest extends AbstractE2ETest {
                 .then().log().all()
                 .extract();
 
-        assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.NOT_FOUND.value());
     }
 
     @DisplayName("다른 사람이 예약을삭제한다")
@@ -177,6 +181,24 @@ class ReservationE2ETest extends AbstractE2ETest {
                 .extract();
 
         assertThat(response.statusCode()).isEqualTo(HttpStatus.UNAUTHORIZED.value());
+    }
+
+    @DisplayName("자신의 예약을 조회한다.")
+    @Test
+    void getMyReservation() {
+        var reservationLocation = createReservation().header("Location").split("/");
+        var reservationId = Long.parseLong(reservationLocation[reservationLocation.length - 1]);
+
+        var response = RestAssured
+                .given().log().all()
+                .auth().oauth2(token.getAccessToken())
+                .when().get("/reservations/mine")
+                .then().log().all()
+                .statusCode(HttpStatus.OK.value())
+                .extract();
+        var myReservations = response.jsonPath().getList(".", ReservationResponse.class);
+
+        assertThat(myReservations.stream().anyMatch(r -> r.getId() == reservationId)).isTrue();
     }
 
     private ExtractableResponse<Response> createReservation() {
