@@ -3,7 +3,6 @@ package nextstep.schedule.dto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import nextstep.schedule.domain.ReservationStatus;
 
 @Getter
 @NoArgsConstructor
