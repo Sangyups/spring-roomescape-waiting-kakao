@@ -1,6 +1,5 @@
 package nextstep.schedule.domain;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 

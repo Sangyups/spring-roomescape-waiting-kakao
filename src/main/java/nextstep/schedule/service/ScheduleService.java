@@ -1,5 +1,8 @@
 package nextstep.schedule.service;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.List;
 import nextstep.global.exception.NotExistEntityException;
 import nextstep.schedule.domain.Schedule;
 import nextstep.schedule.repository.ScheduleRepository;
@@ -7,10 +10,6 @@ import nextstep.theme.domain.Theme;
 import nextstep.theme.repository.ThemeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.util.List;
 
 @Service
 public class ScheduleService {

@@ -1,9 +1,8 @@
 package nextstep.theme.repository;
 
-import nextstep.theme.domain.Theme;
-
 import java.util.List;
 import java.util.Optional;
+import nextstep.theme.domain.Theme;
 
 public interface ThemeRepository {
 

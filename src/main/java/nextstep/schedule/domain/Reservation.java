@@ -1,9 +1,8 @@
 package nextstep.schedule.domain;
 
+import java.util.Objects;
 import lombok.Builder;
 import lombok.Getter;
-
-import java.util.Objects;
 
 @Getter
 @Builder

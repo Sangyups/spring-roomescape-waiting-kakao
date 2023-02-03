@@ -1,12 +1,11 @@
 package nextstep.theme.mapper;
 
+import java.util.List;
 import nextstep.theme.domain.Theme;
 import nextstep.theme.dto.ThemeResponse;
 import nextstep.theme.entity.ThemeEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
-
-import java.util.List;
 
 @Mapper
 public interface ThemeMapper {

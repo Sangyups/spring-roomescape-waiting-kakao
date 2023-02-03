@@ -1,11 +1,15 @@
 package auth.domain;
 
-import io.jsonwebtoken.*;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.UnsupportedJwtException;
 import io.jsonwebtoken.security.SignatureException;
-import lombok.Getter;
-
 import java.util.Date;
 import java.util.Map;
+import lombok.Getter;
 
 @Getter
 public class AccessToken extends Jwt {

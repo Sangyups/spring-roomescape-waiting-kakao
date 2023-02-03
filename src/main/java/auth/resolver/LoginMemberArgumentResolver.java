@@ -5,14 +5,13 @@ import auth.domain.AbstractBaseUser;
 import auth.domain.AccessToken;
 import auth.exception.UnauthenticatedException;
 import auth.repository.AuthRepository;
+import java.util.Optional;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
-
-import java.util.Optional;
 
 public class LoginMemberArgumentResolver implements HandlerMethodArgumentResolver {
 
@@ -29,7 +28,8 @@ public class LoginMemberArgumentResolver implements HandlerMethodArgumentResolve
     }
 
     @Override
-    public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
+    public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer,
+            NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
         String authorization = webRequest.getHeader(HttpHeaders.AUTHORIZATION);
         String token = extractToken(authorization);
 

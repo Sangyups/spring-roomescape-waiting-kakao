@@ -1,5 +1,11 @@
 package nextstep.schedule.dao;
 
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.Time;
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Optional;
 import nextstep.schedule.entity.ScheduleEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -7,13 +13,6 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
-
-import java.sql.Date;
-import java.sql.PreparedStatement;
-import java.sql.Time;
-import java.time.LocalDate;
-import java.util.List;
-import java.util.Optional;
 
 @Component
 public class ScheduleDao {
@@ -70,5 +69,4 @@ public class ScheduleDao {
 
         return jdbcTemplate.update(sql, id);
     }
-
 }

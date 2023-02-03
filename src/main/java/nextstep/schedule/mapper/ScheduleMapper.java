@@ -1,14 +1,13 @@
 package nextstep.schedule.mapper;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.List;
 import nextstep.schedule.domain.Schedule;
 import nextstep.schedule.dto.ScheduleResponse;
 import nextstep.schedule.entity.ScheduleEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
-
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.util.List;
 
 @Mapper
 public interface ScheduleMapper {

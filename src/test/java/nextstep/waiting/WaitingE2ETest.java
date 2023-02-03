@@ -1,10 +1,18 @@
 package nextstep.waiting;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.core.Is.is;
+
 import auth.dto.AccessTokenResponse;
 import auth.dto.LoginRequest;
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 import nextstep.AbstractE2ETest;
 import nextstep.member.dto.MemberRequest;
 import nextstep.schedule.dto.ScheduleRequest;
@@ -18,16 +26,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.core.Is.is;
-
 public class WaitingE2ETest extends AbstractE2ETest {
+
     public static final String DATE = "2022-08-11";
     public static final String TIME = "13:00";
     private WaitingRequest waitingRequest;
@@ -216,7 +216,6 @@ public class WaitingE2ETest extends AbstractE2ETest {
 
         return response.as(AccessTokenResponse.class);
     }
-
 
     private ExtractableResponse<Response> createExampleWaiting() {
         return RestAssured

@@ -12,7 +12,8 @@ public class ReservationEntity {
     private final Long waitingCount;
     private final String status;
 
-    private ReservationEntity(Long id, AggregateReference<ScheduleEntity, Long> scheduleId, Long memberId, Long waitingCount, String status) {
+    private ReservationEntity(Long id, AggregateReference<ScheduleEntity, Long> scheduleId, Long memberId,
+            Long waitingCount, String status) {
         this.id = id;
         this.scheduleId = scheduleId;
         this.memberId = memberId;

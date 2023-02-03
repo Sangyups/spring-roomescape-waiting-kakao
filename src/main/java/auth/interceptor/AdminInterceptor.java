@@ -4,13 +4,12 @@ import auth.domain.AccessToken;
 import auth.domain.Role;
 import auth.exception.NotAuthorizedException;
 import auth.exception.UnauthenticatedException;
-import org.springframework.http.HttpHeaders;
-import org.springframework.web.servlet.HandlerInterceptor;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.Objects;
 import java.util.Optional;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import org.springframework.http.HttpHeaders;
+import org.springframework.web.servlet.HandlerInterceptor;
 
 public class AdminInterceptor implements HandlerInterceptor {
 

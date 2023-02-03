@@ -1,5 +1,7 @@
 package nextstep.member.dao;
 
+import java.sql.PreparedStatement;
+import java.util.Optional;
 import nextstep.member.entity.MemberEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -7,9 +9,6 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
-
-import java.sql.PreparedStatement;
-import java.util.Optional;
 
 @Component
 public class MemberDao {
