@@ -1,8 +1,13 @@
 package nextstep.reservation;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.List;
 import nextstep.AbstractE2ETest;
 import nextstep.schedule.domain.Reservation;
 import nextstep.schedule.dto.ReservationRequest;
@@ -15,13 +20,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
-
 public class ReservationE2ETest extends AbstractE2ETest {
+
     public static final String DATE = "2022-08-11";
     public static final String TIME = "13:00";
 

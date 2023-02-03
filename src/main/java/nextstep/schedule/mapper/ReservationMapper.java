@@ -1,5 +1,6 @@
 package nextstep.schedule.mapper;
 
+import java.util.List;
 import nextstep.schedule.domain.Reservation;
 import nextstep.schedule.domain.ReservationList;
 import nextstep.schedule.domain.ReservationStatus;
@@ -8,8 +9,6 @@ import nextstep.schedule.dto.WaitingResponse;
 import nextstep.schedule.entity.ReservationEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
-
-import java.util.List;
 
 @Mapper
 public interface ReservationMapper {
@@ -41,7 +40,6 @@ public interface ReservationMapper {
         String status = reservation.getStatus().toString();
 
         return new WaitingResponse(id, scheduleId, memberId, waitingCount, status);
-
     }
 
     Reservation entityToDomain(ReservationEntity reservationEntity);

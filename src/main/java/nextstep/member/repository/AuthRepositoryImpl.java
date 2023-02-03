@@ -1,12 +1,11 @@
 package nextstep.member.repository;
 
 import auth.repository.AuthRepository;
+import java.util.Optional;
 import nextstep.member.dao.MemberDao;
 import nextstep.member.domain.Member;
 import nextstep.member.mapper.MemberMapper;
 import org.springframework.stereotype.Repository;
-
-import java.util.Optional;
 
 @Repository
 public class AuthRepositoryImpl implements AuthRepository<Member> {

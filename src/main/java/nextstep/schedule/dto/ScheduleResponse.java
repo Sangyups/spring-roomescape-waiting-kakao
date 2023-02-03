@@ -1,12 +1,11 @@
 package nextstep.schedule.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.time.LocalDate;
-import java.time.LocalTime;
 
 @Getter
 @NoArgsConstructor

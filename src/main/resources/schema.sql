@@ -12,8 +12,8 @@ CREATE TABLE reservation
     status        varchar(255) not null,
     waiting_count bigint       not null,
     primary key (id),
-    key schedule_idx (schedule_id),
-    key member_idx (member_id),
+    key           schedule_idx (schedule_id),
+    key           member_idx (member_id),
     constraint schedule_count_uk UNIQUE (schedule_id, waiting_count)
 );
 

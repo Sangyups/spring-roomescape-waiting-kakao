@@ -12,6 +12,7 @@ import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfi
         exclude = SecurityAutoConfiguration.class
 )
 public class RoomEscapeApplication {
+
     public static void main(String[] args) {
         SpringApplication.run(RoomEscapeApplication.class, args);
     }

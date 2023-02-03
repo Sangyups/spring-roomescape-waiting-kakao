@@ -1,5 +1,7 @@
 package nextstep.theme;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import auth.dto.AccessTokenResponse;
 import auth.dto.LoginRequest;
 import io.restassured.RestAssured;
@@ -11,9 +13,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 public class ThemeE2ETest extends AbstractE2ETest {
+
     @DisplayName("테마를 생성한다")
     @Test
     public void create() {

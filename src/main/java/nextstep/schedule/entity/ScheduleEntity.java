@@ -1,11 +1,10 @@
 package nextstep.schedule.entity;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import lombok.Getter;
 import nextstep.theme.entity.ThemeEntity;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
-
-import java.time.LocalDate;
-import java.time.LocalTime;
 
 @Getter
 public class ScheduleEntity {

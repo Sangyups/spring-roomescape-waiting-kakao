@@ -1,6 +1,5 @@
 package nextstep.schedule.service;
 
-
 import auth.exception.NotAuthorizedException;
 import nextstep.global.exception.AlreadyReservedException;
 import nextstep.global.exception.NotExistEntityException;
@@ -13,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 
 @Service
 public class ReservationService {
@@ -76,7 +74,6 @@ public class ReservationService {
 
         return reservationRepository.findAllAcceptedByMemberId(memberId);
     }
-
 
     public ReservationList findAllWaitingByMemberId(Long memberId) {
 

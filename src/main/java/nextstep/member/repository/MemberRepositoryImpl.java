@@ -1,12 +1,11 @@
 package nextstep.member.repository;
 
+import java.util.Optional;
 import nextstep.member.dao.MemberDao;
 import nextstep.member.domain.Member;
 import nextstep.member.mapper.MemberMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-
-import java.util.Optional;
 
 @Repository
 public class MemberRepositoryImpl implements MemberRepository {

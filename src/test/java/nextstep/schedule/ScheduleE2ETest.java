@@ -1,8 +1,12 @@
 package nextstep.schedule;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import auth.dto.AccessTokenResponse;
 import auth.dto.LoginRequest;
 import io.restassured.RestAssured;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import nextstep.AbstractE2ETest;
 import nextstep.member.dto.MemberRequest;
 import nextstep.schedule.dto.ScheduleRequest;
@@ -13,12 +17,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
-
-import static org.assertj.core.api.Assertions.assertThat;
-
 public class ScheduleE2ETest extends AbstractE2ETest {
+
     private Long themeId;
 
     @BeforeEach

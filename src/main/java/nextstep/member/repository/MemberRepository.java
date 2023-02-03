@@ -1,8 +1,7 @@
 package nextstep.member.repository;
 
-import nextstep.member.domain.Member;
-
 import java.util.Optional;
+import nextstep.member.domain.Member;
 
 public interface MemberRepository {
 

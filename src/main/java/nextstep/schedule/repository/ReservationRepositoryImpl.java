@@ -48,7 +48,6 @@ public class ReservationRepositoryImpl implements ReservationRepository {
         return reservationDao.deleteById(id);
     }
 
-
     @Override
     public void increaseWaitingCount(Long scheduleId) {
         waitingCounterDao.increaseWaitingCount(scheduleId);

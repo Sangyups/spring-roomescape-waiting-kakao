@@ -1,9 +1,8 @@
 package nextstep.schedule.repository;
 
-import nextstep.schedule.domain.Schedule;
-
 import java.util.List;
 import java.util.Optional;
+import nextstep.schedule.domain.Schedule;
 
 public interface ScheduleRepository {
 

@@ -1,6 +1,9 @@
 package nextstep.schedule.controller;
 
 import auth.annotation.AuthRequired;
+import java.sql.SQLIntegrityConstraintViolationException;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import nextstep.member.domain.Member;
 import nextstep.schedule.domain.Reservation;
@@ -11,11 +14,12 @@ import nextstep.schedule.mapper.ReservationMapper;
 import nextstep.schedule.service.ReservationService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import java.sql.SQLIntegrityConstraintViolationException;
-import java.util.List;
-import java.util.stream.Collectors;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
 @RestController
@@ -25,7 +29,8 @@ public class ReservationController {
 
     @GetMapping("/reservations/mine")
     public ResponseEntity<List<ReservationResponse>> getMyReservations(@AuthRequired Member member) {
-        List<Reservation> reservationList = reservationService.findAllAcceptedByMemberId(member.getId()).getReservationList();
+        List<Reservation> reservationList = reservationService.findAllAcceptedByMemberId(member.getId())
+                .getReservationList();
         List<ReservationResponse> reservationResponses = reservationList.stream()
                 .map(ReservationMapper.INSTANCE::domainToResponseDto)
                 .collect(Collectors.toList());
@@ -34,7 +39,8 @@ public class ReservationController {
     }
 
     @PostMapping("/reservation-waitings")
-    public ResponseEntity<Void> createWaiting(@RequestBody ReservationRequest reservationRequest, @AuthRequired Member member) throws SQLIntegrityConstraintViolationException {
+    public ResponseEntity<Void> createWaiting(@RequestBody ReservationRequest reservationRequest,
+            @AuthRequired Member member) throws SQLIntegrityConstraintViolationException {
         reservationService.create(reservationRequest.getScheduleId(), member.getId());
 
         return ResponseEntity.status(HttpStatus.CREATED).build();
@@ -42,7 +48,8 @@ public class ReservationController {
 
     @GetMapping("/reservation-waitings/mine")
     public ResponseEntity<List<WaitingResponse>> getMyWaiting(@AuthRequired Member member) {
-        List<Reservation> reservationList = reservationService.findAllWaitingByMemberId((member.getId())).getReservationList();
+        List<Reservation> reservationList = reservationService.findAllWaitingByMemberId((member.getId()))
+                .getReservationList();
         List<WaitingResponse> waitingResponses = reservationList.stream()
                 .map(ReservationMapper.INSTANCE::domainToWaitingResponseDto)
                 .collect(Collectors.toList());
@@ -56,5 +63,4 @@ public class ReservationController {
 
         return ResponseEntity.noContent().build();
     }
-
 }
